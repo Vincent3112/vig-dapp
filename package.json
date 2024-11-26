@@ -9,13 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.61.3",
+    "@reown/appkit": "^1.5.2",
+    "@reown/appkit-adapter-wagmi": "^1.5.2",
+    "@reown/walletkit": "^1.1.1",
+    "@tanstack/react-query": "^5.61.4",
+    "@walletconnect/core": "^2.17.2",
+    "@walletconnect/utils": "^2.17.2",
     "next": "14.2.18",
     "react": "^18",
     "react-dom": "^18",
     "viem": "^2.21.51",
     "wagmi": "^2.13.0"
   },
+  
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
