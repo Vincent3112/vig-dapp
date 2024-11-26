@@ -6,7 +6,11 @@ import { headers } from "next/headers";
 
 import ContextProvider from "../context/provider";
 
+import "react-toastify/dist/ReactToastify.css";
+
 import "./globals.css";
+
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +29,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ContextProvider cookies={cookies}>{children}</ContextProvider>
+        <ContextProvider cookies={cookies}>
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            newestOnTop={false}
+            draggable
+            style={{ zIndex: 999999 }}
+          />
+          {children}
+        </ContextProvider>
       </body>
     </html>
   );

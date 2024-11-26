@@ -12,6 +12,8 @@ import { VIG_TOKEN_ADDRESS } from "@/utils/consts";
 
 import { Address } from "viem";
 
+import { TokenTransfer } from "./components/TokenTransfer";
+
 export default function Page() {
   const { disconnect } = useDisconnect();
 
@@ -42,9 +44,7 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="w-full h-full flex justify-center items-center">
-        TRANSFER PAGE
-      </div>
+      <TokenTransfer />
     </div>
   );
 }

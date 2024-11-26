@@ -9,19 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@reown/appkit": "^1.5.2",
     "@reown/appkit-adapter-wagmi": "^1.5.2",
     "@reown/walletkit": "^1.1.1",
     "@tanstack/react-query": "^5.61.4",
     "@walletconnect/core": "^2.17.2",
     "@walletconnect/utils": "^2.17.2",
+    "ethers": "^6.13.4",
+    "i": "^0.3.7",
     "next": "14.2.18",
+    "npm": "^10.9.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.53.2",
+    "react-toastify": "^10.0.6",
     "viem": "^2.21.51",
-    "wagmi": "^2.13.0"
+    "wagmi": "^2.13.0",
+    "zod": "^3.23.8"
   },
-  
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
