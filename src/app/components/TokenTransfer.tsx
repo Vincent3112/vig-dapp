@@ -20,8 +20,20 @@ import { VigABI } from "@/utils/VigABI";
 
 import { Address } from "viem";
 
-export const TokenTransfer = () => {
+import { useToken } from "@/hooks/useToken";
+
+type TokenTransferProps = {
+  address: string;
+};
+
+export const TokenTransfer = ({ address }: TokenTransferProps) => {
   let toastPlaceholder: Id;
+
+  const { balance, refetch } = useToken({
+    tokenAddress: VIG_TOKEN_ADDRESS,
+    userAddress: address as Address,
+    abi: VigABI,
+  });
 
   const [pending, setPending] = useState<boolean>(false);
 
@@ -36,7 +48,7 @@ export const TokenTransfer = () => {
     if (transactionSuccessful) {
       toast.dismiss(toastPlaceholder);
       toast.success("Transfer confirmed");
-
+      refetch();
       reset();
       setPending(false);
     }
@@ -56,7 +68,9 @@ export const TokenTransfer = () => {
       amount: z
         .string()
         .transform((val) => Number(val))
-        .refine((val) => val > 0, { message: "Amount must be positive" }),
+        .refine((val) => val > 0 && val <= Number(balance), {
+          message: "Please enter a valid amount.",
+        }),
     })
     .required();
 
@@ -98,8 +112,8 @@ export const TokenTransfer = () => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="rounded-xl px-24 py-6 border boder-white/10 flex flex-col justify-center items-center">
+    <section className="w-full h-full flex justify-center items-center px-6">
+      <div className="rounded-xl w-full sm:w-fit px-6 sm:px-24 py-6 border boder-white/10 flex flex-col justify-center items-center">
         <div className="text-2xl font-bold mb-8">Transfer $VIG</div>
 
         <form
@@ -112,7 +126,7 @@ export const TokenTransfer = () => {
               disabled={pending}
               {...register("ethAddress")}
               type="text"
-              className="w-80 text-black rounded-lg p-2 border border-white/20"
+              className="w-full sm:w-80 text-black rounded-lg p-2 border border-white/20"
               placeholder="0x"
             />
 
@@ -127,7 +141,7 @@ export const TokenTransfer = () => {
               disabled={pending}
               {...register("amount")}
               type="number"
-              className="w-80 text-black rounded-lg p-2 border border-white/20"
+              className="w-full sm:w-80 text-black rounded-lg p-2 border border-white/20"
             />
             <div className="h-2 text-red-600">
               {errors.amount ? String(errors.amount?.message) : null}
@@ -136,12 +150,12 @@ export const TokenTransfer = () => {
 
           <button
             disabled={pending}
-            className="w-full rounded-xl my-8 px-6 py-2 uppercase cursor-pointer text-black bg-white"
+            className="w-full rounded-xl font-bold my-8 px-6 py-2 uppercase cursor-pointer text-black hover:bg-white/30 bg-white"
           >
-            send
+            send tokens
           </button>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
