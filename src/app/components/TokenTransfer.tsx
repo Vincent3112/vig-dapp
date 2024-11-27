@@ -23,28 +23,30 @@ import { Address } from "viem";
 export const TokenTransfer = () => {
   let toastPlaceholder: Id;
 
-  const { writeContractAsync, data: hash } = useWriteContract();
-
-  const { isLoading, isSuccess } = useWaitForTransactionReceipt({
-    hash,
-  });
-
   const [pending, setPending] = useState<boolean>(false);
 
+  const { writeContractAsync, data: hash } = useWriteContract();
+
+  const { isLoading: transactionLoading, isSuccess: transactionSuccessful } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
+
   useEffect(() => {
-    if (isSuccess) {
+    if (transactionSuccessful) {
       toast.dismiss(toastPlaceholder);
       toast.success("Transfer confirmed");
 
+      reset();
       setPending(false);
     }
+  }, [transactionSuccessful]);
 
-    if (isLoading) {
-      toast.update(toastPlaceholder, {
-        render: "Transaction is being processed",
-      });
+  useEffect(() => {
+    if (transactionLoading) {
+      toastPlaceholder = toast.loading("Transaction is being processed");
     }
-  }, [isSuccess, isLoading]);
+  }, [transactionLoading]);
 
   const schema = z
     .object({
@@ -63,6 +65,7 @@ export const TokenTransfer = () => {
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
   });
@@ -70,8 +73,8 @@ export const TokenTransfer = () => {
   const onSubmit = async () => {
     setPending(true);
 
-    toastPlaceholder = toast.loading(
-      "Please transaction in your wallet provider."
+    const validationToast = toast.loading(
+      "Please validate the transaction in your wallet provider."
     );
 
     try {
@@ -84,7 +87,11 @@ export const TokenTransfer = () => {
           getValues().amount * 1000000000000000000,
         ],
       });
+
+      toast.dismiss(validationToast);
     } catch (e) {
+      toast.dismiss(validationToast);
+      console.error(e);
       toast.error("Transfer failed");
       setPending(false);
     }
@@ -110,7 +117,7 @@ export const TokenTransfer = () => {
             />
 
             <div className="h-2 text-red-600">
-              {errors.ethAddress ? <>{errors.ethAddress?.message}</> : <></>}
+              {errors.ethAddress ? String(errors.ethAddress?.message) : null}
             </div>
           </div>
 
@@ -123,7 +130,7 @@ export const TokenTransfer = () => {
               className="w-80 text-black rounded-lg p-2 border border-white/20"
             />
             <div className="h-2 text-red-600">
-              {errors.amount ? <>{errors.amount?.message}</> : <></>}
+              {errors.amount ? String(errors.amount?.message) : null}
             </div>
           </div>
 

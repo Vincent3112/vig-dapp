@@ -1,6 +1,10 @@
 "use client";
 
-import { useAppKitAccount, useDisconnect } from "@reown/appkit/react";
+import {
+  useAppKit,
+  useAppKitAccount,
+  useDisconnect,
+} from "@reown/appkit/react";
 
 import { useRouter } from "next/navigation";
 
@@ -12,12 +16,16 @@ import { VIG_TOKEN_ADDRESS } from "@/utils/consts";
 
 import { Address } from "viem";
 
-import { TokenTransfer } from "./components/TokenTransfer";
+import { TokenTransfer } from "../components/TokenTransfer";
 
-export default function Page() {
+import { bigNumber } from "@/utils/format";
+
+export const VigDashboard = () => {
   const { disconnect } = useDisconnect();
 
   const router = useRouter();
+
+  const { open } = useAppKit();
 
   const { isConnected, address } = useAppKitAccount();
 
@@ -27,15 +35,24 @@ export default function Page() {
     }
   }, [isConnected]);
 
-  const { data } = useBalance({
+  const { data: balance } = useBalance({
     address: address as Address,
     token: VIG_TOKEN_ADDRESS,
   });
 
   return (
     <div className="w-full h-screen flex flex-col justify-start items-start">
-      <div className="w-full p-6 flex justify-between items-center">
-        <div>$VIG Balance : {data?.formatted}</div>
+      <div className="w-full p-6 flex justify-between items-start">
+        <div className="flex flex-col justify-start items-start">
+          <div
+            onClick={() => open({ view: "Account" })}
+            className="uppercase font-bold mb-3 rounded-xl cursor-pointer text-black bg-white px-4 py-2 text-sm"
+          >
+            {address?.substring(0, 6)}...{address?.substring(38, 42)}
+          </div>
+          {balance && <div>$VIG Balance : {bigNumber(balance?.formatted)}</div>}
+        </div>
+
         <div
           className="uppercase font-bold rounded-xl cursor-pointer text-black bg-white px-4 py-2 text-sm"
           onClick={() => disconnect()}
@@ -47,4 +64,4 @@ export default function Page() {
       <TokenTransfer />
     </div>
   );
-}
+};
