@@ -1,26 +1,26 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import z from "zod";
-
-import * as ethers from "ethers";
-
-import { Id, toast } from "react-toastify";
-
-import { useEffect, useState } from "react";
-
-import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-
-import { VIG_TOKEN_ADDRESS } from "@/utils/consts";
-
-import { VigABI } from "@/utils/VigABI";
 
 import { Address } from "viem";
 
-import { useToken } from "@/hooks/useToken";
+import * as ethers from "ethers";
+
+import { useForm } from "react-hook-form";
+
+import { Id, toast } from "react-toastify";
+
+import { VigABI } from "../../utils/VigABI";
+
+import { useEffect, useState } from "react";
+
+import { useToken } from "../../hooks/useToken";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { VIG_TOKEN_ADDRESS } from "../../utils/consts";
+
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 
 type TokenTransferProps = {
   address: string;
@@ -114,7 +114,7 @@ export const TokenTransfer = ({ address }: TokenTransferProps) => {
   return (
     <section className="w-full h-full flex justify-center items-center px-6">
       <div className="rounded-xl w-full sm:w-fit px-6 sm:px-24 py-6 border boder-white/10 flex flex-col justify-center items-center">
-        <div className="text-2xl font-bold mb-8">Transfer $VIG</div>
+        <h1 className="text-2xl font-bold mb-8">Transfer $VIG</h1>
 
         <form
           className={pending ? "cursor-not-allowed opacity-30" : ""}

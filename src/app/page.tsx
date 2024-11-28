@@ -2,9 +2,9 @@
 
 import { useAppKitAccount } from "@reown/appkit/react";
 
-import { ConnectWallet } from "./components/ConnectWallet";
+import { ConnectWallet } from "../components/ConnectWallet/ConnectWallet";
 
-import { VigDashboard } from "./components/VigDashboard";
+import { VigDashboard } from "../components/VigDashboard/VigDashboard";
 
 export default function Home() {
   const { isConnected, address } = useAppKitAccount();
