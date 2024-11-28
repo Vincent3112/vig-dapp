@@ -2,7 +2,7 @@
 
 import { useReadContract } from "wagmi";
 
-import * as ethers from "ethers";
+import { BigNumberish, formatUnits } from "ethers";
 
 import { useState, useEffect } from "react";
 
@@ -40,7 +40,7 @@ export const useToken = ({ tokenAddress, userAddress, abi }: useTokenProps) => {
   }, [decimalsData]);
 
   const balance = balanceData
-    ? ethers.formatUnits(balanceData as ethers.BigNumberish, decimals)
+    ? formatUnits(balanceData as BigNumberish, decimals)
     : null;
 
   const refetch = () => {

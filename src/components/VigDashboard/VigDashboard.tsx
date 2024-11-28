@@ -43,6 +43,7 @@ export const VigDashboard = () => {
               {address?.substring(0, 6)}...{address?.substring(38, 42)}
             </button>
             {balance && <>Balance : {bigNumber(balance)} $VIG </>}
+            {!balance && !isLoading && <>Balance : 0 $VIG </>}
             {isLoading && <>Balance loading... </>}
           </div>
 
