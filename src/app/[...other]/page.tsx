@@ -2,8 +2,14 @@
 
 import { useRouter } from "next/navigation";
 
+import { useEffect } from "react";
+
 export default function Page() {
   const router = useRouter();
+
+  useEffect(() => {
+    router.push("/oops");
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-full">

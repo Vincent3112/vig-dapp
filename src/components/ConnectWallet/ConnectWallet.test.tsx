@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 
 import { render, screen } from "@testing-library/react";
 
-import { expect, describe, it, beforeAll } from "@jest/globals";
+import { expect, describe, it } from "@jest/globals";
 
 import { ConnectWallet } from "./ConnectWallet";
 
