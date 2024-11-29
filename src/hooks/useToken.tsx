@@ -19,7 +19,7 @@ export const useToken = ({ tokenAddress, userAddress, abi }: useTokenProps) => {
     data: balanceData,
     isError: balanceError,
     isLoading: balanceLoading,
-    refetch: refetchBalance,
+    refetch,
   } = useReadContract({
     abi,
     address: tokenAddress as `0x${string}`,
@@ -42,10 +42,6 @@ export const useToken = ({ tokenAddress, userAddress, abi }: useTokenProps) => {
   const balance = balanceData
     ? formatUnits(balanceData as BigNumberish, decimals)
     : null;
-
-  const refetch = () => {
-    refetchBalance();
-  };
 
   return {
     balance,

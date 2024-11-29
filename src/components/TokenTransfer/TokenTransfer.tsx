@@ -39,8 +39,13 @@ export const TokenTransfer = ({ address }: TokenTransferProps) => {
     abi: VigABI,
   });
 
-  const { gasCost, setGasCost, gasEstimationPending, debouncedGasEstimation } =
-    useGasEstimation(VigABI);
+  const {
+    gasCost,
+    setGasCost,
+    gasEstimationPending,
+    gasEstimationError,
+    debouncedGasEstimation,
+  } = useGasEstimation(VigABI);
 
   const { writeContractAsync, data: hash } = useWriteContract();
 
@@ -105,6 +110,7 @@ export const TokenTransfer = ({ address }: TokenTransferProps) => {
           getValues().ethAddress as Address,
           getValues().amount * 10 ** 18,
         ],
+        
       });
 
       toast.dismiss(validationToast);
@@ -143,6 +149,7 @@ export const TokenTransfer = ({ address }: TokenTransferProps) => {
               onChange={(e) => handleInputChange("ethAddress", e.target.value)}
               type="text"
               className="w-full sm:w-80 text-black rounded-lg p-2 border border-white/20"
+              aria-label="ethAddress"
               placeholder="0x"
             />
 
@@ -159,24 +166,25 @@ export const TokenTransfer = ({ address }: TokenTransferProps) => {
               onChange={(e) => handleInputChange("amount", e.target.value)}
               type="number"
               className="w-full sm:w-80 text-black rounded-lg p-2 border border-white/20"
+              aria-label="amount"
             />
             <div className="h-2 text-red-600">
               {errors.amount ? String(errors.amount?.message) : null}
             </div>
           </div>
 
-          <div
-            className={
-              gasEstimationPending
-                ? "h-2 mt-6 font-bold text-blue-800"
-                : "h-2 mt-6 font-bold text-blue-500"
-            }
-          >
-            {!gasEstimationPending && Number(gasCost) > 0 && (
-              <>Fees estimated : {Number(gasCost).toFixed(8)} ETH</>
+          <div className="h-2 mt-6 font-bold">
+            {gasEstimationPending && (
+              <p className="text-blue-800">Estimating fees...</p>
             )}
-
-            {gasEstimationPending && <>Fees estimation loading...</>}
+            {gasEstimationError && (
+              <p className="text-red-500">{gasEstimationError}</p>
+            )}
+            {gasCost && !gasEstimationPending && (
+              <p className="text-blue-500">
+                Fees estimated : {Number(gasCost).toFixed(8)} ETH
+              </p>
+            )}
           </div>
 
           <button

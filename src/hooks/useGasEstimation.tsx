@@ -17,6 +17,10 @@ export const useGasEstimation = (VigABI: InterfaceAbi) => {
 
   const [gasEstimationPending, setGasEstimationPending] = useState(false);
 
+  const [gasEstimationError, setGasEstimationError] = useState<string | null>(
+    null
+  );
+
   const provider = useMemo(
     () => new JsonRpcProvider("https://rpc.sepolia.org"),
     []
@@ -24,9 +28,13 @@ export const useGasEstimation = (VigABI: InterfaceAbi) => {
 
   const estimateGas = useCallback(
     async (recipientAddress: string, amount: number, senderAddress: string) => {
-      if (!recipientAddress || !amount) return;
+      if (!recipientAddress || !amount) {
+        setGasEstimationError("Recipient address or amount is missing.");
+        return;
+      }
 
       setGasEstimationPending(true);
+      setGasEstimationError(null);
       try {
         const gasEstimate = await provider.estimateGas({
           to: recipientAddress,
@@ -45,10 +53,13 @@ export const useGasEstimation = (VigABI: InterfaceAbi) => {
           );
 
           setGasCost(gasCostInEth);
+        } else {
+          setGasEstimationError("Failed to retrieve gas price.");
         }
       } catch (error) {
-        console.error("Gas estimation failed : ", error);
+        console.error("Gas estimation failed:", error);
         setGasCost(null);
+        setGasEstimationError("Gas estimation failed.");
       } finally {
         setGasEstimationPending(false);
       }
@@ -62,6 +73,7 @@ export const useGasEstimation = (VigABI: InterfaceAbi) => {
     gasCost,
     setGasCost,
     gasEstimationPending,
+    gasEstimationError,
     debouncedGasEstimation,
   };
 };

@@ -31,11 +31,9 @@ jest.mock("../hooks/useToken", () => ({
   useToken: jest.fn(),
 }));
 
-describe("Testing home page", () => {
-  const mockUseWriteContract = jest.fn();
-
+describe("Should render home page", () => {
   useWriteContract.mockReturnValue({
-    writeContractAsync: mockUseWriteContract,
+    writeContractAsync: jest.fn(),
     data: "OXmockHash",
   });
 
@@ -44,16 +42,12 @@ describe("Testing home page", () => {
     isSuccess: false,
   });
 
-  const mockDisconnect = jest.fn();
-
   useDisconnect.mockReturnValue({
-    disconnect: mockDisconnect,
+    disconnect: jest.fn(),
   });
 
-  const mockOpen = jest.fn();
-
   useAppKit.mockReturnValue({
-    open: mockOpen,
+    open: jest.fn(),
   });
 
   useToken.mockReturnValue({

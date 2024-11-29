@@ -12,16 +12,14 @@ jest.mock("@reown/appkit/react", () => ({
   useAppKit: jest.fn(),
 }));
 
-describe("Testing connect wallet component", () => {
-  const mockOpen = jest.fn();
-
+describe("Should render ConnectWallet component", () => {
   useAppKit.mockReturnValue({
-    open: mockOpen,
+    open: jest.fn(),
   });
 
   render(<ConnectWallet />);
 
-  it("should render the connect wallet component", () => {
+  it("should display content", () => {
     const title = screen.getByText("Welcome to $VIG Token dApp");
 
     const subtitle = screen.getByText(
